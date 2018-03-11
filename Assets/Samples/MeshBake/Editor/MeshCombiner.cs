@@ -19,22 +19,55 @@ public class MeshCombiner : EditorWindow
  //   public GameObject m_SrcPrefab;
     private Dictionary<Shader, List<MeshWithSameMat>> m_ShaderGroups = new Dictionary<Shader, List<MeshWithSameMat>>();
     private Vector2 scrollposition;
+    private Vector2 scrollpositionRight;
+    
 
-    [MenuItem("TMTool/MeshCombiner")]
+     [MenuItem("TMTool/MeshCombiner")]
     static void Init()
     {
         // Get existing open window or if none, make a new one:
         MeshCombiner window = (MeshCombiner)EditorWindow.GetWindow(typeof(MeshCombiner));
         window.Show();
+        window.UpdateList();
     }
+
+    private void OnFocus()
+    {
+      //  SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
+      //  SceneView.onSceneGUIDelegate += this.OnSceneGUI;
+
+    }
+
+    private void OnDestroy()
+    {
+      //  SceneView.onSceneGUIDelegate -= this.OnSceneGUI;
+    }
+
+    void OnHierarchyChange()
+    {
+        //Debug.Log("当Hierarchy视图中的任何对象发生改变时调用一次");
+    }
+
+    void OnProjectChange()
+    {
+       // Debug.Log("当Project视图中的资源发生改变时调用一次");
+    }
+
+    void OnSelectionChange()
+    {
+        //当窗口出去开启状态，并且在Hierarchy视图中选择某游戏对象时调用
+        UpdateList();
+    }
+
 
     // Implement your own editor GUI here.
     void OnGUI()
     {
+/*
         if (GUILayout.Button("刷新列表"))
         {
             UpdateList();
-        }
+        }*/
 
         GUILayout.BeginHorizontal();
         DrawSelectObjectList();
@@ -47,6 +80,7 @@ public class MeshCombiner : EditorWindow
         GUILayout.BeginVertical(GUILayout.Width(position.width / 2));
         //绘制标签
         GUILayout.Label("SelectedObjects");
+        GUILayout.Space(10);
 
         //开始滑块区域
         scrollposition = GUILayout.BeginScrollView(scrollposition);
@@ -68,9 +102,10 @@ public class MeshCombiner : EditorWindow
         GUILayout.BeginVertical(GUILayout.Width(position.width / 2));
         //绘制标签
         GUILayout.Label("CombineInfos");
+        GUILayout.Space(10);
 
         //开始滑块区域
-        scrollposition = GUILayout.BeginScrollView(scrollposition);
+        scrollpositionRight = GUILayout.BeginScrollView(scrollpositionRight);
 
         Shader shader;
         List<MeshWithSameMat> matGroups;
@@ -86,7 +121,9 @@ public class MeshCombiner : EditorWindow
                 GUILayout.Label("   " + matGroup.m_Material.name);
                 foreach (GameObject obj in matGroup.m_Objets)
                 {
+                    GUILayout.Label("       " + obj.name);
                 }
+            }
         }
 
 
@@ -95,6 +132,7 @@ public class MeshCombiner : EditorWindow
         GUILayout.EndVertical();
     }
 
+    // 用相同Shader的统计到一组（未考虑Keywords），Shader组里面再按照材质分组
     private void UpdateList()
     {
         m_ShaderGroups.Clear();
@@ -109,7 +147,7 @@ public class MeshCombiner : EditorWindow
             if (mr == null || mf == null)
                 continue;
 
-            Material mat = mr.material;
+            Material mat = mr.sharedMaterial;
             Shader shader = mat.shader; // 暂时没考虑keyword，如果用到了一定要考虑
 
             if (m_ShaderGroups.TryGetValue(shader, out matGroups))
@@ -143,6 +181,12 @@ public class MeshCombiner : EditorWindow
                 m_ShaderGroups.Add(shader, matGroups);
             }
         }
+    }
+
+    // 保存Prefab
+    void SavePrefab()
+    {
+        //PrefabUtility.
     }
 
 }

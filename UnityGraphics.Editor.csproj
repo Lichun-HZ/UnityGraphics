@@ -294,7 +294,6 @@
     <Compile Include="Assets\Samples\Advanced Toon Shading\Screen Effect\Bloom\Editor\BloomEditor.cs" />
     <Compile Include="Assets\Samples\Advanced Toon Shading\Screen Effect\Bloom\Editor\BloomGraphDrawer.cs" />
     <Compile Include="Assets\Samples\Advanced Toon Shading\Screen Effect\ColorSuite\Editor\ColorSuiteEditor.cs" />
-    <Compile Include="Assets\Samples\MeshBake\Editor\MeshCombineInfo.cs" />
     <Compile Include="Assets\Samples\MeshBake\Editor\MeshCombiner.cs" />
   </ItemGroup>
   <ItemGroup>

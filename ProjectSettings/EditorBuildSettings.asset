@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Samples/MeshBake/MeshBake.unity
+    guid: 5a861ee6acd78ac489bec93dd93f4c3e
